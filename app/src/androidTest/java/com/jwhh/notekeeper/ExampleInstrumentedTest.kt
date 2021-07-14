@@ -1,7 +1,5 @@
 package com.jwhh.notekeeper
 
-import androidx.test.InstrumentationRegistry.getTargetContext
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
 import org.junit.Test
@@ -16,10 +14,5 @@ import org.junit.Assert.*
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
-    @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.jwhh.notekeeper", appContext.packageName)
-    }
+
 }
