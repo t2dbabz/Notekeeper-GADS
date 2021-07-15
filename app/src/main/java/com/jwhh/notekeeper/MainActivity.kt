@@ -10,6 +10,7 @@ import com.jwhh.notekeeper.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
+    private var notePosition = -1
     private lateinit var  binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,13 +20,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
         setSupportActionBar(binding.toolbar)
 
-        val dm = DataManager()
+
         val adapterCourses = ArrayAdapter(this, android.R.layout.simple_spinner_item,
-                             dm.courses.values.toList())
+                             DataManager.courses.values.toList())
 
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         binding.content.spinnerCourses.adapter = adapterCourses
+
+        notePosition = intent.getIntExtra(EXTRA_NOTE_POSITION, POSITION_NOT_SET)
+
+        if(notePosition != POSITION_NOT_SET)
+            displayNote()
+    }
+
+    private fun displayNote() {
+       val note = DataManager.notes[notePosition]
+        binding.content.textNoteTitle.setText(note.title)
+        binding.content.textNoteText.setText(note.text)
+
+        val coursePosition = DataManager.courses.values.indexOf(note.course)
+        binding.content.spinnerCourses.setSelection(coursePosition)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
