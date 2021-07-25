@@ -2,7 +2,6 @@ package com.jwhh.notekeeper
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jwhh.notekeeper.databinding.ActivityNoteListBinding
@@ -22,21 +21,19 @@ class NoteListActivity : AppCompatActivity() {
 
 
         binding.fab.setOnClickListener { view ->
-            val activityIntent = Intent(this, MainActivity::class.java)
+            val activityIntent = Intent(this, NoteActivity::class.java)
             startActivity(activityIntent)
         }
 
         binding.noteListContent.listItems.layoutManager = LinearLayoutManager(this)
 
-
-
+        binding.noteListContent.listItems.adapter = NoteRecyclerAdapter(this, DataManager.notes)
 
     }
 
     override fun onResume() {
         super.onResume()
-
-
+        binding.noteListContent.listItems.adapter?.notifyDataSetChanged()
     }
 
 }

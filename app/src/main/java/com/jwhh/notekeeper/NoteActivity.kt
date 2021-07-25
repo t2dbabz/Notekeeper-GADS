@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.jwhh.notekeeper.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity() {
+class NoteActivity : AppCompatActivity() {
     private val tag = this::class.simpleName
     private var notePosition = POSITION_NOT_SET
     private lateinit var  binding: ActivityMainBinding
