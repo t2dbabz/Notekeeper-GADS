@@ -8,6 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    -<style parent="@android:style/TextAppearance.Material.Medium" name="CourseTitle">
+
+    <item name="android:textColor">@color/pluralsight_orange</item>
+
+    <item name="android:textStyle">bold</item>
+
+</style>
+
 
 
 

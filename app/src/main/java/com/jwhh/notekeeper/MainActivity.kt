@@ -1,15 +1,21 @@
 package com.jwhh.notekeeper
 
 import android.os.Bundle
+import android.os.Message
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import com.jwhh.notekeeper.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-    private var notePosition = -1
+    private val tag = this::class.simpleName
+    private var notePosition = POSITION_NOT_SET
     private lateinit var  binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +39,16 @@ class MainActivity : AppCompatActivity() {
         if(notePosition != POSITION_NOT_SET)
             displayNote()
         else{
-            DataManager.notes.add(NoteInfo())
-            notePosition = DataManager.notes.lastIndex
+            createNewNote()
         }
 
+        Log.d(tag, "onCreate")
+
+    }
+
+    private fun createNewNote() {
+        DataManager.notes.add(NoteInfo())
+        notePosition = DataManager.notes.lastIndex
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -45,12 +57,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayNote() {
+
+        if (notePosition > DataManager.notes.lastIndex){
+            showMessage("Note Not Found")
+            Log.e(tag, "Invalid note position $notePosition. max valid position ${ DataManager.notes.lastIndex}")
+        }
+
+        Log.i(tag, "Displaying note for position $notePosition")
        val note = DataManager.notes[notePosition]
         binding.content.textNoteTitle.setText(note.title)
         binding.content.textNoteText.setText(note.text)
 
         val coursePosition = DataManager.courses.values.indexOf(note.course)
         binding.content.spinnerCourses.setSelection(coursePosition)
+    }
+
+    private fun showMessage(message: String){
+        Snackbar.make(binding.content.textNoteTitle, message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -95,6 +118,7 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         saveNote()
+        Log.d(tag, "onPause")
     }
 
     private fun saveNote() {
@@ -102,7 +126,10 @@ class MainActivity : AppCompatActivity() {
         note.title = binding.content.textNoteTitle.text.toString()
         note.text = binding.content.textNoteText.text.toString()
         note.course = binding.content.spinnerCourses.selectedItem as CourseInfo
+
+
     }
+
 
 
 }
